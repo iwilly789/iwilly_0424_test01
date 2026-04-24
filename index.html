@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>경주 — 천년의 고도</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* =============================================
+       🎨 색상 & 폰트 설정
+       ============================================= */
+    :root {
+      --bg:           #f7f4ef;
+      --bg-dark:      #1c1814;
+      --text:         #2a2118;
+      --accenttt:       #8ff0c0;
+      --accentt:       #eb9927;
+      --accent:       #e9cca4;
+      --accent-light: #e8ddd0;
+      --white:        #fdfcfa;
+      --muted:        #9a8c7e;
+      --nav-hover:    #d6ba91; /* 메뉴 호버용 주황색 추가 */
+
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'Noto Serif KR', serif;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       ✨ 상단 내비게이션 (수정됨)
+       ============================================= */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      /* 스크롤 시 배경이 보일 수 있도록 살짝 어둡게 처리하거나 투명 유지 */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: #fff;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    /* 메뉴 리스트 구조 */
+    .nav-list {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    /* 메뉴 링크 기본 스타일 */
+    .nav-link {
+      text-decoration: none;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      padding: 8px 0;
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* [기능 1] 마우스를 올리면 글자 크기 살짝 키워짐 & 색상 변경 */
+    .nav-link:hover {
+      color: var(--white);
+      transform: scale(1.1);
+    }
+
+    /* [기능 2] 마우스를 올리면 주황색 가로바가 생김 */
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: var(--nav-hover);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* =============================================
+       🖼️ 히어로 섹션
+       ============================================= */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: grid;
+      place-items: end start;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('imgs/Gemini_Generated_Image_9kftd09kftd09kft.png');
+      background-size: cover;
+      background-position: center 30%;
+      animation: zoomIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(1.08); }
+      to   { transform: scale(1); }
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(20,15,10,0.72) 0%, rgba(20,15,10,0.1) 65%),
+        linear-gradient(to top, rgba(20,15,10,0.5) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 56px 80px;
+      max-width: 1200px;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeRight 0.9s 0.6s forwards;
+    }
+
+    .hero-eyebrow-line {
+      width: 36px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-eyebrow-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeRight 0.9s 0.8s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: #dabc7d;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      max-width: 420px;
+      opacity: 0;
+      animation: fadeRight 0.9s 1s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      right: 56px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .hero-scroll-bar {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+      animation: scrollBar 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollBar {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50%       { transform: scaleY(1.4); opacity: 1; }
+    }
+
+    /* =============================================
+       📝 소개 섹션
+       ============================================= */
+    .intro {
+      padding: 110px 48px 90px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .intro-left {
+      position: sticky;
+      top: 120px;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .intro-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .intro-title strong {
+      display: block;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .intro-text {
+      font-size: 1rem;
+      line-height: 2;
+      color: #5a4e42;
+      margin-bottom: 28px;
+    }
+
+    .intro-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--accent-light);
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* =============================================
+       🗺️ 주요 명소 카드 섹션
+       ============================================= */
+    .spots {
+      padding: 80px 48px 110px;
+      background: var(--bg-dark);
+      position: relative;
+    }
+
+    .spots::before {
+      content: '慶州';
+      position: absolute;
+      top: 40px;
+      right: 60px;
+      font-family: var(--font-display);
+      font-size: 10rem;
+      color: rgba(255,255,255,0.025);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .spots-header {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .spots-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-top: 14px;
+    }
+
+    .spots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .spot-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+    }
+
+    .spot-card:first-child {
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+
+    .spot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      display: block;
+    }
+
+    .spot-card:hover .spot-img {
+      transform: scale(1.06);
+    }
+
+    .spot-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15,10,5,0.85) 0%, rgba(15,10,5,0.1) 50%, transparent 100%);
+      transition: opacity 0.4s;
+    }
+
+    .spot-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 30px 28px;
+      transform: translateY(8px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .spot-card:hover .spot-info { transform: translateY(0); }
+
+    .spot-category {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .spot-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .spot-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .spot-card:hover .spot-desc { max-height: 100px; }
+
+    /* =============================================
+       📞 예약/문의 CTA 섹션
+       ============================================= */
+    .cta {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-dark);
+      padding: 130px 48px;
+      text-align: center;
+    }
+
+    .cta-inner { position: relative; z-index: 1; }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 44px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary {
+      background: var(--accentt);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: #a07c4e;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(139,108,66,0.35);
+    }
+
+    .btn-ghost {
+      background: var(--accenttt);
+      color: var(--white);
+    }
+
+    .btn-ghost:hover {
+      background: #a07c4e;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(139,108,66,0.35);
+    }
+    /* =============================================
+       📌 푸터
+       ============================================= */
+    footer {
+      background: #110e0b;
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+    }
+
+    @keyframes fadeRight {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* =============================================
+       반응형 (모바일)
+       ============================================= */
+    @media (max-width: 768px) {
+      nav { 
+        padding: 20px 24px; 
+        flex-direction: column;
+        gap: 15px;
+      }
+      .nav-list { gap: 15px; }
+      .nav-link { font-size: 0.8rem; }
+      
+      .hero-content { padding: 0 24px 60px; }
+      .intro { grid-template-columns: 1fr; padding: 70px 24px; }
+      .spots { padding: 70px 24px; }
+      .spots-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">THE KYONGJU</a>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#intro" class="nav-link">시간의 길</a></li>
+      <li class="nav-item"><a href="#spots" class="nav-link">야경의 미</a></li>
+      <li class="nav-item"><a href="#tips" class="nav-link">경주의 맛</a></li>
+      <li class="nav-item"><a href="#cta" class="nav-link">여행지기</a></li> 
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">Gyeongju, Korea</span>
+      </div>
+      <h1 class="hero-title">천년의유산<br/><em>찬란한 황금의 서사</em></h1>
+      <p class="hero-sub">고즈넉한 돌담길부터 화려하게 수놓인 월정교의 반영까지, 시간의 결을 따라 걷는 경주에서 당신만의 이야기를 기록해 보세요.</p>
+    </div>
+    <div class="hero-scroll"><div class="hero-scroll-bar"></div><span>Scroll</span></div>
+  </section>
+
+  <section id="intro" class="intro">
+    <div class="intro-left">
+      <p class="section-label">About</p>
+      <h2 class="intro-title">천 년의 시간이<br/><strong>오늘의 당신에게 닿는 순간 </strong></h2>
+    </div>
+    <div class="intro-right">
+      <p class="intro-text">경주는 기원전 57년부터 935년까지, 약 천 년이라는 긴 시간 동안 신라의 수도로서 찬란한 문화를 꽃피웠습니다. 도시 전체가 하나의 거대한 박물관이라 불릴 만큼 곳곳에서 고분과 사찰, 석탑이 자리를 지키고 있습니다.</p>
+      <div class="intro-stats">
+        <div class="stat"><div class="stat-number">992</div><div class="stat-label">년간의 수도</div></div>
+        <div class="stat"><div class="stat-number">52</div><div class="stat-label">국보 유물</div></div>
+        <div class="stat"><div class="stat-number">5</div><div class="stat-label">유네스코 유산</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="spots" class="spots">
+    <div class="spots-header">
+      <p class="section-label">Must-Visit</p>
+      <h2 class="spots-title">꼭 가봐야 할 명소</h2>
+    </div>
+    <div class="spots-grid">
+      <div class="spot-card">
+        <img class="spot-img" src="imgs/01Gemini_Generated_Image_ds6kf9ds6kf9ds6k.png" alt="불국사"/>
+        <div class="spot-overlay"></div>
+        <div class="spot-info">
+          <p class="spot-category">세계문화유산 · UNESCO</p>
+          <h3 class="spot-name">불국사</h3>
+          <p class="spot-desc">한국 불교 건축의 정수, 다보탑과 석가탑을 만날 수 있는 천년 고찰입니다.</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <img class="spot-img" src="imgs/02Gemini_Generated_Image_hhhkqdhhhkqdhhhk.png" alt="첨성대"/>
+        <div class="spot-overlay"></div>
+        <div class="spot-info">
+          <p class="spot-category">국보 · 천문 유적</p>
+          <h3 class="spot-name">첨성대</h3>
+          <p class="spot-desc">동양에서 가장 오래된 천문대입니다.</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <img class="spot-img" src="imgs/03Gemini_Generated_Image_wfije1wfije1wfij.png" alt="대릉원"/>
+        <div class="spot-overlay"></div>
+        <div class="spot-info">
+          <p class="spot-category">사적 · 고분군</p>
+          <h3 class="spot-name">대릉원</h3>
+          <p class="spot-desc">신라 왕족의 고분이 모인 신비로운 정원입니다.</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <img class="spot-img" src="imgs/04Gemini_Generated_Image_9sox6p9sox6p9sox.png" alt="교촌마을"/>
+        <div class="spot-overlay"></div>
+        <div class="spot-info">
+          <p class="spot-category">전통 · 야경</p>
+          <h3 class="spot-name">교촌마을</h3>
+          <p class="spot-desc">한옥의 우아함과 현대의 조명이 만나는 곳입니다.</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <img class="spot-img" src="imgs/05Gemini_Generated_Image_757m4c757m4c757m.png" alt="황룡사지"/>
+        <div class="spot-overlay"></div>
+        <div class="spot-info">
+          <p class="spot-category">역사 · 자연</p>
+          <h3 class="spot-name">황룡사지</h3>
+          <p class="spot-desc">잃어버린 천년 왕국의 웅장한 터를 마주해 보세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta" class="cta">
+    <div class="cta-inner">
+      <h2 class="cta-title">지금 바로<br/><em>경주로 떠나세요</em></h2>
+      <p class="cta-sub">천년의 이야기가 당신을 기다립니다</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">여행 패키지 보기</a>
+        <a href="#" class="btn btn-ghost">문의하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">慶州 Gyeongju Travel</span>
+    <span class="footer-copy">© 2025 경주 여행 가이드 — 만든 이: 홍길동</span>
+  </footer>
+
+</body>
+</html>
